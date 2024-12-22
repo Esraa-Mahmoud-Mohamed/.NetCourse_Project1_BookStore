@@ -59,6 +59,17 @@ namespace BookStore.UnitOfWorks
             }
 
         }
+        public GenericRepository<OrderDetails> orderDetailsGenericRepository
+        {
+            get
+            {
+                if (orderDetailsRepo == null)
+                    orderDetailsRepo = new GenericRepository<OrderDetails>(db);
+
+                return orderDetailsRepo;
+            }
+
+        }
 
         public void save()
         {

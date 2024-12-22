@@ -12,5 +12,6 @@ namespace BookStore.Models
         [ForeignKey("Customer")]
         public string cust_id { get; set; }
         public virtual Customer Customer { get; set; }
+        public virtual List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
     }
 }

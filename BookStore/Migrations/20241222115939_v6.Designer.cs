@@ -4,6 +4,7 @@ using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,16 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.Migrations
 {
     [DbContext(typeof(BookStoreContext))]
-    partial class BookStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20241222115939_v6")]
+    partial class v6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -80,9 +80,9 @@ namespace BookStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("auth_id");
-
                     b.HasIndex("cat_id");
+
+                    b.HasIndex(new[] { "auth_id" }, "IX_Authors_auth_id");
 
                     b.ToTable("Book");
                 });
@@ -441,7 +441,7 @@ namespace BookStore.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStore.Models.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("order_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -510,11 +510,6 @@ namespace BookStore.Migrations
             modelBuilder.Entity("BookStore.Models.Catalog", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("BookStore.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }
